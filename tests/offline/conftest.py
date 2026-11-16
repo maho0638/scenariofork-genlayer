@@ -46,9 +46,9 @@ def host(monkeypatch):
         gl.message.sender_address = who
     host.set_sender = set_sender
     set_sender("0xOWNER")
-    class TreeMap:
+    class TreeMap(dict):
         def __class_getitem__(cls, arg):
-            return dict
+            return cls
     module = types.ModuleType("genlayer")
     module.gl = gl
     module.TreeMap = TreeMap
@@ -59,8 +59,6 @@ def host(monkeypatch):
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     contract = mod.ScenarioFork()
-    contract.decisions = {}
-    contract.options = {}
     host.contract = contract
     host.error = VMError
     return host
