@@ -1,14 +1,27 @@
-# Proof status — scenariofork-genlayer
+# Verified evidence status — scenariofork-genlayer
 
-Verification snapshot: 2026-11-16.
+Last checked: **2026-11-16**. Public code in `main` corresponds to the Studio-tested contract source.
 
-- Python 3.13 `compileall`: **PASS**.
-- Offline pytest: **PASS (6/6)** on local Python 3.13 and official GitHub Actions ubuntu-24.04.
-- Official GenLayer `genlayer-test` Direct Mode: **PASS (5/5)** on [GitHub Actions run 43862825800](https://github.com/maho0638/scenariofork-genlayer/actions/runs/43862825800), official genlayer-test==0.29.2 with v0.2.16 SDK runner pin and controlled LLM response fixtures.
-- GenVM lint: **PASS (3 checks)** on the same official [GitHub Actions run 43862825800](https://github.com/maho0638/scenariofork-genlayer/actions/runs/43862825800).
-- Public Studionet signed deploy/consensus/readback: **NOT EXECUTED** (not authorized; no transaction submitted).
-- GitHub: **PUBLISHED** to https://github.com/maho0638/scenariofork-genlayer (all 11 source/test/docs files; fetched source equality confirmed).
-- Explorer contract address: **NONE**.
-- Portal submission: **NOT SUBMITTED**.
+## Complete automated QA
 
-Verified on isolated free ubuntu-24.04 QA PR #2. The successful test workflow is now copied to `main` with **workflow_dispatch-only** trigger (no automatic deploy or secret usage). The test-only runner pin selects a real official GenVM release and does not falsify outputs. No signed StudioNet deployment/write/readback or Explorer evidence is claimed; obtain that if Portal review requires live proof.
+- Python compilation: **PASS**.
+- Offline state-machine regression: **PASS 6/6**.
+- Official GenLayer Direct Mode SDK (real GenVM, controlled LLM response fixtures): **PASS 5/5**.
+- Official GenVM lint: **PASS**.
+- Official Direct Mode and lint report: https://github.com/maho0638/scenariofork-genlayer/actions/runs/43862825800
+
+## Actual hosted GenLayer Studionet
+
+- Network RPC: `https://studio.genlayer.com/api` — chain ID **61999 verified by JSON-RPC before transactions**.
+- Actual contract deployment: **PASS** — `0x8a6dED4D5f94f88CFA4eA95d7AfBAd31425Be8eF`.
+- Accepted on-network transactions: **PASS** — 5 write transactions plus the deployment, with readbacks.
+- Unmocked AI nondeterministic execution and validator consensus: **PASS** with `leader_only=false`.
+- GitHub free runner `ubuntu-24.04`: **PASS 1/1 integration acceptance test**.
+- Full real-network GitHub job and logs: https://github.com/maho0638/scenariofork-genlayer/actions/runs/43894948732
+- Exact transaction hashes, observed state and security limits: [STUDIONET_PROOF.md](STUDIONET_PROOF.md).
+
+## What this does and does not prove
+
+This is a **real hosted Studionet execution**, not a local host mock, Direct Mode only, or a claim about Bradbury/mainnet. The test used an ephemeral GenLayer SDK-generated sender, with no user wallet keys or GitHub secrets. No value transfers. Successful receipts and state readbacks were checked; **separate transaction finality was not checked**. Studionet can reset. No guaranteed Community Points or mainnet security audit is claimed.
+
+The deploy workflow in `main` is **manual-only** (`workflow_dispatch`), so commits/PRs cannot automatically redeploy or spend test resources. Portal submission: **NOT SUBMITTED**.
