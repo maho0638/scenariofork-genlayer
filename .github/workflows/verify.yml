@@ -17,9 +17,9 @@ jobs:
           python -m pip install "genlayer-py==0.18.0" "genlayer-test @ git+https://github.com/genlayerlabs/genlayer-testing-suite@343e3a358f9e235a93b49c60721ce7676585ff07" "genvm-linter==0.11.0" "pytest>=8,<9"
       - name: Python syntax
         run: python -m compileall -q contracts tests
-      - name: Official GenLayer SDK Direct tests
-        run: python -m pytest -q tests/sdk
-      - name: GenVM lint
-        run: genvm-lint check contracts/*.py
       - name: Offline state-machine regression
         run: python -m pytest -q tests/offline
+      - name: GenVM lint
+        run: genvm-lint check contracts/*.py
+      - name: Official GenLayer SDK Direct tests
+        run: python -m pytest -q tests/sdk
