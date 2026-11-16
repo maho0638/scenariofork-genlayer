@@ -53,7 +53,7 @@ Offline host-mock tests are **not** GenVM tests. An optional, **manual-only**, G
 
 - Offline state-machine tests: see [`docs/PROOF_STATUS.md`](docs/PROOF_STATUS.md).
 - Official GenLayer Direct Mode: **PASS (5/5)**, GenVM lint: **PASS**, offline regression: **6/6**, verified on [GitHub Actions run #43862825800](https://github.com/maho0638/scenariofork-genlayer/actions/runs/43862825800).
-- Signed Studionet deployment / on-chain Explorer proof: **not executed or claimed**.
-- Public source plus verified GenLayer Direct Mode/lint test logs are available. A genuine Explorer address may strengthen the submission if requested; no live deployment is claimed.
+- Actual hosted Studionet deployment and validator consensus **PASS** on [GitHub Actions run #43894948732](https://github.com/maho0638/scenariofork-genlayer/actions/runs/43894948732).
+- Studionet contract: `0x8a6dED4D5f94f88CFA4eA95d7AfBAd31425Be8eF`. Exact transaction receipts and observed outputs: [Studionet proof](docs/STUDIONET_PROOF.md). No independently verified Explorer deep link is claimed.
 
-See [`SUBMISSION_DRAFT.md`](SUBMISSION_DRAFT.md) after on-chain verification. No promise of approval or points.
+See [`SUBMISSION_DRAFT.md`](SUBMISSION_DRAFT.md) for Portal evidence and wording. No promise of approval or points.
