@@ -1,6 +1,8 @@
-name: Verify Intelligent Contract (manual, no network writes)
+name: Verify Intelligent Contract (isolated QA, no network writes)
 on:
-  workflow_dispatch:
+  pull_request:
+    types: [opened]
+    branches: [main]
 permissions:
   contents: read
 jobs:
