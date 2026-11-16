@@ -1,0 +1,50 @@
+name: ScenarioFork Studionet end-to-end (isolated QA)
+on:
+  pull_request:
+    types: [opened]
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  network-acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify canonical Studionet RPC and chain ID before any writes
+        run: |
+          python - <<'PY'
+          import json, urllib.request, urllib.error
+          rpc="https://studio.genlayer.com/api"
+          payload=json.dumps({"jsonrpc":"2.0","id":1,"method":"eth_chainId","params":[]}).encode()
+          # Both requests use the official canonical endpoint; no proxies or credentials.
+          cases=[
+            ("official_sdk_headers",{"Content-Type":"application/json","Accept":"application/json","User-Agent":"genlayer-py/0.16.3"}),
+            ("official_studio_origin",{"Content-Type":"application/json","Accept":"application/json","Origin":"https://studio.genlayer.com","Referer":"https://studio.genlayer.com/"})
+          ]
+          valid=False
+          for label,headers in cases:
+              req=urllib.request.Request(rpc,data=payload,headers=headers)
+              try:
+                  with urllib.request.urlopen(req,timeout=20) as response:
+                      result=json.load(response)
+                  if "error" in result: raise RuntimeError(str(result["error"]))
+                  chain=int(result["result"],16)
+                  print(label,"verified chain",chain)
+                  if chain != 61999: raise RuntimeError("Wrong chain ID; refusing all signing")
+                  valid=True
+                  break
+              except urllib.error.HTTPError as e:
+                  body=e.read(250).decode("utf-8","replace")
+                  print(label,"HTTP",e.code,"body prefix:",repr(body))
+                  if e.code not in (400,403,404,405): raise
+          if not valid: raise RuntimeError("Canonical Studionet RPC not accessible from GitHub runner; no transactions attempted")
+          PY
+      - name: Install pinned official GenLayer Studio test SDK
+        run: python -m pip install 'genlayer-py==0.16.3' 'genlayer-test==0.29.2' 'pytest>=8,<9'
+      - name: Run ONE real Studionet integration scenario (no model mocks)
+        run: |
+          gltest --network studionet --default-wait-interval 2000 --default-wait-retries 50 -s -q tests/studio/test_studionet.py
