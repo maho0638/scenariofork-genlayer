@@ -57,7 +57,8 @@ class ScenarioFork(gl.Contract):
     options: TreeMap[str, str]
 
     def __init__(self):
-        pass
+        self.decisions = TreeMap()
+        self.options = TreeMap()
 
     @gl.public.write
     def open_decision(self, decision_id: str, question: str, hard_rule: str) -> None:
