@@ -52,7 +52,8 @@ Offline host-mock tests are **not** GenVM tests. An optional, **manual-only**, G
 ## Proof status
 
 - Offline state-machine tests: see [`docs/PROOF_STATUS.md`](docs/PROOF_STATUS.md).
-- Official SDK, lint, Studionet Explorer: **not claimed until observed**.
+- Official GenLayer Direct Mode: **PASS (5/5)**, GenVM lint: **PASS**, offline regression: **6/6**, verified on [GitHub Actions run #43862825800](https://github.com/maho0638/scenariofork-genlayer/actions/runs/43862825800).
+- Signed Studionet deployment / on-chain Explorer proof: **not executed or claimed**.
 - Portal contribution needs a valid repository plus a real Explorer deployment of the matching source revision.
 
 See [`SUBMISSION_DRAFT.md`](SUBMISSION_DRAFT.md) after on-chain verification. No promise of approval or points.
